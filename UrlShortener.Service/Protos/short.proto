@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "UrlShortener.Service";
+
+package short;
+
+
+service Shortener {
+  rpc ShortenAddress (ShortenAddressRequest) returns (ShortenAddressReply);
+  rpc ResolveShortAddress (ResolveShortAddressRequest) returns (ResolveShortAddressReply);
+}
+
+message ShortenAddressRequest {
+  string fullAddress = 1;
+}
+
+message ShortenAddressReply {
+  string shortAddress = 1;
+}
+
+message ResolveShortAddressRequest {
+  string shortAddress = 1;
+}
+
+message ResolveShortAddressReply {
+  string fullAddress = 1;
+}

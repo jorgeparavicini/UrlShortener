@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "UrlShortener.Statistics";
+
+package statistics;
+
+service Statistics {
+  rpc IncreaseClickCount (IncreaseClickCountRequest) returns (IncreaseClickCountReply);
+  rpc GetClickCount (GetClickCountRequest) returns (GetClickCountReply);
+}
+
+message IncreaseClickCountRequest {
+  string shortAddress = 1;
+}
+
+message IncreaseClickCountReply {
+
+}
+
+message GetClickCountRequest {
+  string shortAddress = 1;
+}
+
+message  GetClickCountReply {
+  int32 clickCount = 1;
+}
