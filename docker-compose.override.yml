@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  urlshortener.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "6500:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  urlshortener.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "6501:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  urlshortener.statistics:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "6502:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  urlshortener.service.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - "SA_PASSWORD=${SERVICE_DB_PASSWORD}"
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+
+  urlshortener.statistics.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - "SA_PASSWORD=${STATISTICS_DB_PASSWORD}"
+      - ACCEPT_EULA=Y
+    ports:
+      - "5435:1433"
+
