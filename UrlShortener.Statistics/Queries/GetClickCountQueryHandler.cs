@@ -21,7 +21,7 @@ public class GetClickCountQueryHandler
         var entity =
             await _context.ClickCounts.FirstOrDefaultAsync(x => x.ShortId == request.ShortAddress,
                 cancellationToken);
-        var count = entity?.Count ?? 0;
+        var count = entity?.Count ?? -1;
         return new GetClickCountReply
         {
             ClickCount = count
