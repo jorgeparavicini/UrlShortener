@@ -1,0 +1,39 @@
+﻿@page "/new"
+@using UrlShortener.Ui.Data
+@inject IJSRuntime JsRuntime
+@inject ShortenAddressService ShortenAddressService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h3>Create New Short Address</h3>
+
+<div class="form-group">
+    <label for="create">Destination Address</label>
+    <input type="text" class="form-control" id="create" @bind="FullAddress"/>
+</div>
+<button type="submit" class="btn btn-primary mt-3" @onclick="Create">Create</button>
+
+@if (ShortenedAddress is not null)
+{
+    <h4 class="mt-5">Generated Id:</h4>
+    <p>@ShortenedAddress.ShortId</p>
+    <button class="btn btn-primary" @onclick="Copy">Copy Address</button>
+}
+
+@code {
+    private string FullAddress { get; set; } = string.Empty;
+    private ShortenedAddress? ShortenedAddress { get; set; }
+
+    private async Task Create()
+    {
+        ShortenedAddress = await ShortenAddressService.ShortenAddress(FullAddress);
+    }
+
+    private async Task Copy()
+    {
+        var url = new Uri(new Uri(NavigationManager.BaseUri), ShortenedAddress!.ShortId);
+        await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
+    }
+
+}

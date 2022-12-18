@@ -24,3 +24,10 @@ services:
 
   urlshortener.service.db:
     image: mcr.microsoft.com/mssql/server
+
+  urlshortener.ui:
+    image: ${DOCKER_REGISTRY-}urlshortenerui
+    build:
+      context: .
+      dockerfile: UrlShortener.Ui/Dockerfile
+
