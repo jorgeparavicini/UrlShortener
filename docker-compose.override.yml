@@ -46,3 +46,10 @@ services:
     ports:
       - "5435:1433"
 
+
+  urlshortener.ui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "6503:80"
+
