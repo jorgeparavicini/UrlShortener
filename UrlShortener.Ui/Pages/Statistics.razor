@@ -1,0 +1,46 @@
+﻿@page "/statistics"
+@using UrlShortener.Ui.Data
+@inject StatisticService StatisticService
+
+<PageTitle>Statistics</PageTitle>
+
+<h3>Statistics</h3>
+
+
+<div class="form-group">
+    <label for="shortId">Id</label>
+    <input type="text" class="form-control" id="shortId" @bind="ShortId" maxlength="10"/>
+</div>
+<button type="submit" class="btn btn-primary mt-3" @onclick="UpdateStatistics">Find</button>
+
+@if (Statistic is not null)
+{
+    if (Statistic.Count < 0)
+    {
+        <p class="text-danger mt-4">Id not found...</p>
+    }
+    else
+    {
+        <div class="mt-4">
+            <h4>Count:</h4>
+            <p>@Statistic.Count</p>
+        </div>
+    }
+}
+
+
+@code {
+    private string ShortId { get; set; } = string.Empty;
+    private Statistic? Statistic { get; set; } = null;
+
+    private async Task UpdateStatistics()
+    {
+        Console.WriteLine("Fetching statistics");
+        Statistic = await StatisticService.GetStatisticAsync(ShortId);
+        if (Statistic is null)
+        {
+            await Console.Error.WriteLineAsync($"Could not find statistic for id: {ShortId}");
+        }
+    }
+
+}

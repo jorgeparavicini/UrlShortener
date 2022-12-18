@@ -1,0 +1,40 @@
+﻿@page "/{id}"
+@using UrlShortener.Ui.Data
+@inject AddressResolverService AddressResolverService
+@inject NavigationManager NavigationManager
+
+@if (Error is null)
+{
+    <h1>Redirecting...</h1>
+}
+else
+{
+    <h1 class="text-danger">@Error</h1>
+}
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private string? Error { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id is null)
+        {
+            Error = "Id is required";
+            return;
+        }
+
+        var result = await AddressResolverService.ResolveAddress(Id);
+
+        if (result is null)
+        {
+            Error = "Could not find address";
+            return;
+        }
+
+        NavigationManager.NavigateTo(result.FullAddress);
+    }
+
+}
