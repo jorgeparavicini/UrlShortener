@@ -1,5 +1,5 @@
-﻿using Grpc.Net.Client;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.API.Models;
 using UrlShortener.API.Services;
 
 namespace UrlShortener.API.Controllers;
@@ -8,17 +8,16 @@ namespace UrlShortener.API.Controllers;
 [Route("[controller]")]
 public class ShortenerController : ControllerBase
 {
-    private readonly ILogger<ShortenerController> _logger;
     private readonly IShortenerService _service;
 
-    public ShortenerController(ILogger<ShortenerController> logger, IShortenerService service)
+    public ShortenerController(IShortenerService service)
     {
-        _logger = logger;
         _service = service;
     }
 
     [HttpGet("{shortAddress}")]
-    public async Task<ActionResult<string>> ResolveShortAddress([FromRoute] string shortAddress)
+    public async Task<ActionResult<ResolvedAddress>> ResolveShortAddress(
+        [FromRoute] string shortAddress)
     {
         var result = await _service.ResolveAddress(shortAddress);
         if (result is null)
@@ -26,17 +25,25 @@ public class ShortenerController : ControllerBase
             return NotFound();
         }
 
-        return Ok(result);
+        return Ok(new ResolvedAddress
+        {
+            FullAddress = result
+        });
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> ShortenAddress([FromBody] string fullAddress)
+    public async Task<ActionResult<ShortAddress>> ShortenAddress(
+        [FromBody] Models.ShortenAddressRequest fullAddress)
     {
-        return Ok(await _service.ShortenAddress(fullAddress));
+        var result = await _service.ShortenAddress(fullAddress.FullAddress);
+        return Ok(new ShortAddress
+        {
+            ShortId = result
+        });
     }
 
     [HttpGet("statistics/{shortAddress}")]
-    public async Task<ActionResult<int>> GetClickCount([FromRoute] string shortAddress)
+    public async Task<ActionResult<Statistic>> GetClickCount([FromRoute] string shortAddress)
     {
         var result = await _service.GetClickCount(shortAddress);
         if (result is null)
@@ -44,6 +51,9 @@ public class ShortenerController : ControllerBase
             return NotFound();
         }
 
-        return Ok(result);
+        return Ok(new Statistic
+        {
+            Count = result.Value
+        });
     }
 }
