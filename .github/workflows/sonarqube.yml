@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master # or the name of your main branch
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "dev", "master" ]
 
 jobs:
   build:
