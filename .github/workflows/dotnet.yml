@@ -20,9 +20,25 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+        
     - name: Restore dependencies
       run: dotnet restore ./UrlShortener.sln
+      
     - name: Build
       run: dotnet build --no-restore ./UrlShortener.sln
-    - name: Test
-      run: dotnet test --no-build --verbosity normal ./UrlShortener.sln
+      
+    - name: Test & Cover
+      run: dotnet test --no-build --verbosity normal ./UrlShortener.sln --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      
+    - name: Copy Coverage to upload location
+      run: cp coverage/*/coverage.cobertura.xml coverage/coverage.cobertura.xml
+      
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage/coverage.cobertura.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
