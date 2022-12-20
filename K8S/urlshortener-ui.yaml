@@ -1,0 +1,39 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urlshortener-ui
+  labels:
+    component: urlshortener-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: urlshortener-ui
+  template:
+    metadata:
+      labels:
+        app: urlshortener-ui
+    spec:
+      containers:
+        - name: urlshortener-ui
+          image: ghcr.io/jorgeparavicini/urlshortener.ui:master
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Kubernetes
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: urlshortener-ui
+spec:
+  type: LoadBalancer
+  selector:
+    app: urlshortener-ui
+  ports:
+    - name: http
+      protocol: TCP
+      port: 6503
+      targetPort: 80
