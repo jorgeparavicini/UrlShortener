@@ -5,15 +5,19 @@ namespace UrlShortener.Ui.Data;
 public class ShortenAddressService
 {
     private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
 
-    public ShortenAddressService(HttpClient httpClient)
+    public ShortenAddressService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
+        _configuration = configuration;
     }
 
     public async Task<ShortenedAddress?> ShortenAddress(string fullAddress)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, "http://urlshortener.api/Shortener");
+        var baseUrl = _configuration.GetConnectionString("apiService");
+        var request = new HttpRequestMessage(HttpMethod.Post,
+            $"{baseUrl}/Shortener");
         request.Content = JsonContent.Create(new ShortenAddressRequest
         {
             FullAddress = fullAddress
