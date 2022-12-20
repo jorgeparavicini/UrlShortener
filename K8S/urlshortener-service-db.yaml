@@ -1,0 +1,86 @@
+﻿apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: urlshortener-service-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: default
+    name: urlshortener-service-db-pv-claim
+  hostPath:
+    path: "/mnt/data/service"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: urlshortener-service-db-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urlshortener-service-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: urlshortener-service-db
+  template:
+    metadata:
+      labels:
+        app: urlshortener-service-db
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: urlshortener-service-db
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: MSSQL_PID
+              value: "Developer"
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: "askfjhajkhbn@°§¦°212SADFAF2"
+          volumeMounts:
+            - name: urlshortener-service-mssqldb
+              mountPath: /var/opt/service/mssql
+      volumes:
+        - name: urlshortener-service-mssqldb
+          persistentVolumeClaim:
+            claimName: urlshortener-service-db-pv-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: urlshortener-service-db
+spec:
+  type: ClusterIP
+  selector:
+    app: urlshortener-service-db
+  ports:
+    - name: mssql
+      protocol: TCP
+      port: 5434
+      targetPort: 1433
+

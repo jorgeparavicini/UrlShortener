@@ -1,0 +1,41 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urlshortener-statistics
+  labels:
+    component: urlshortener-statistics
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: urlshortener-statistics
+  template:
+    metadata:
+      labels:
+        app: urlshortener-statistics
+    spec:
+      containers:
+        - name: urlshortener-statistics
+          image: ghcr.io/jorgeparavicini/urlshortener.statistics:master
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Kubernetes
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=urlshortener-statistics-db,5435;User Id=SA;Password='askfjhajkhbn@°§¦°212SADFAF2';TrustServerCertificate=True;MultipleActiveResultSets=true;"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: urlshortener-statistics
+spec:
+  type: ClusterIP
+  selector:
+    app: urlshortener-statistics
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: 6502
+      targetPort: 80
