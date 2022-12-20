@@ -5,16 +5,19 @@ namespace UrlShortener.Ui.Data;
 public class AddressResolverService
 {
     private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
 
-    public AddressResolverService(HttpClient httpClient)
+    public AddressResolverService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
+        _configuration = configuration;
     }
 
     public async Task<ResolvedAddress?> ResolveAddress(string shortId)
     {
+        var baseUrl = _configuration.GetConnectionString("apiService");
         var request = new HttpRequestMessage(HttpMethod.Get,
-            $"http://urlshortener.api/Shortener/{shortId}");
+            $"{baseUrl}/Shortener/{shortId}");
         request.Headers.Add("Accept", "application/json");
 
         var response = await _httpClient.SendAsync(request);
