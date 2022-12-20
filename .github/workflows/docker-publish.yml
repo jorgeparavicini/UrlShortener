@@ -31,13 +31,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./UrlShortener.API/Dockerfile
-            image: ${{ env.REGISTRY }}/urlshortener.api
+            image: ghcr.io/jorgeparavicini/urlshortener.api
           - dockerfile: ./UrlShortener.Service/Dockerfile
-            image: ${{ env.REGISTRY }}/urlshortener.service
+            image: ghcr.io/jorgeparavicini/urlshortener.service
           - dockerfile: ./UrlShortener.Statistics/Dockerfile
-            image: ${{ env.REGISTRY }}/urlshortener.statistics
+            image: ghcr.io/jorgeparavicini/urlshortener.statistics
           - dockerfile: ./UrlShortener.Ui/Dockerfile
-            image: ${{ env.REGISTRY }}/urlshortener.ui
+            image: ghcr.io/jorgeparavicini/urlshortener.ui
     permissions:
       contents: read
       packages: write
