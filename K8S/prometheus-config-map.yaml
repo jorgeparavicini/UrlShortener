@@ -51,22 +51,22 @@ data:
         scheme: http
         static_configs:
           - targets:
-              - "http://urlshortener-ui:6503"
+              - "urlshortener-ui.default:6503"
 
       - job_name: 'urlshortener-api'
         scheme: http
         static_configs:
           - targets:
-              - "http://urlshortener-api:6500"
+              - "urlshortener-api.default:6500"
 
       - job_name: 'urlshortener-service'
         scheme: http
         static_configs:
           - targets:
-              - "http://urlshortener-service:6501"
+              - "urlshortener-service.default:6501"
 
       - job_name: 'urlshortener-statistics'
         scheme: http
         static_configs:
           - targets:
-              - "http://urlshortener-statistics:6502"
+              - "urlshortener-statistics.default:6502"
