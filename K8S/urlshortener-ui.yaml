@@ -33,7 +33,7 @@ spec:
   selector:
     app: urlshortener-ui
   ports:
-    - name: http
+    - name: http-ui
       protocol: TCP
       port: 6503
       targetPort: 80
