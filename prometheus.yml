@@ -1,0 +1,28 @@
+﻿scrape_configs:
+  - job_name: 'urlshortener-ui'
+    scrape_interval: 10s
+    scheme: http
+    static_configs:
+      - targets:
+          - "urlshortener.ui:80"
+
+  - job_name: 'urlshortener-api'
+    scrape_interval: 10s
+    scheme: http
+    static_configs:
+      - targets:
+          - "urlshortener.api:80"
+
+  - job_name: 'urlshortener-service'
+    scrape_interval: 10s
+    scheme: http
+    static_configs:
+      - targets:
+          - "urlshortener.service:80"
+
+  - job_name: 'urlshortener-statistics'
+    scrape_interval: 10s
+    scheme: http
+    static_configs:
+      - targets:
+        - "urlshortener.statistics:80"
