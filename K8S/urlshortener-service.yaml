@@ -5,7 +5,7 @@ metadata:
   labels:
     component: urlshortener-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: urlshortener-service
@@ -21,6 +21,8 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Kubernetes
+            - name: ASPNETCORE_URLS
+              value:
             - name: ConnectionStrings__DefaultConnection
               value: "Server=urlshortener-service-db,5434;User Id=SA;Password='askfjhajkhbn@°§¦°212SADFAF2';TrustServerCertificate=True;MultipleActiveResultSets=true;"
 
@@ -35,7 +37,11 @@ spec:
   selector:
     app: urlshortener-service
   ports:
-    - name: grpc
+    - name: http-service
       protocol: TCP
       port: 6501
       targetPort: 80
+    - name: grpc-service
+      protocol: TCP
+      port: 6551
+      targetPort: 5025
