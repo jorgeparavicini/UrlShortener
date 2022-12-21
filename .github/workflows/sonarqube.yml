@@ -1,8 +1,7 @@
 name: Sonarqube
 on:
   push:
-    branches:
-      - master # or the name of your main branch
+    branches: [ "dev", "master" ]
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ "dev", "master" ]
