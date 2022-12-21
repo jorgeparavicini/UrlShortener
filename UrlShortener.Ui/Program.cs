@@ -1,4 +1,5 @@
 using UrlShortener.Ui.Data;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddSingleton<StatisticService>();
 builder.Services.AddSingleton<AddressResolverService>();
 builder.Services.AddSingleton<ShortenAddressService>();
 builder.Services.AddHttpClient();
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks().ForwardToPrometheus();
 
 var app = builder.Build();
 
@@ -24,9 +25,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseHttpMetrics();
+
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.MapHealthChecks("/health");
+app.MapMetrics();
 
 app.Run();
