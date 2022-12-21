@@ -24,6 +24,10 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="7.0.0" />
+        <PackageReference Include="prometheus-net.AspNetCore.Grpc" Version="7.0.0" />
+        <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="7.0.0" />
+        <PackageReference Include="prometheus-net.SystemMetrics" Version="2.0.0" />
         <PackageReference Include="shortid" Version="4.0.0" />
     </ItemGroup>
 
