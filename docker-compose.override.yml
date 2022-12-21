@@ -3,7 +3,7 @@ version: '3.4'
 services:
   urlshortener.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "6500:80"
@@ -49,7 +49,7 @@ services:
 
   urlshortener.ui:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - "6503:80"
 
