@@ -9,6 +9,7 @@ builder.Services.AddSingleton<StatisticService>();
 builder.Services.AddSingleton<AddressResolverService>();
 builder.Services.AddSingleton<ShortenAddressService>();
 builder.Services.AddHttpClient();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -25,5 +26,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.MapHealthChecks("/health");
 
 app.Run();

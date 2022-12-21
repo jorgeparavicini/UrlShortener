@@ -11,6 +11,7 @@ builder.Services.AddGrpc();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -38,5 +39,6 @@ app.MapGrpcService<ShortenerService>();
 app.MapGet("/",
     () =>
         "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapHealthChecks("/health");
 
 app.Run();

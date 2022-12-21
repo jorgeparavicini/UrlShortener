@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IShortenerService, ShortenerService>();
+builder.Services.AddHealthChecks();
 
 using var statsChannel =
     GrpcChannel.ForAddress(builder.Configuration.GetConnectionString("gRPCStatistics")!);
@@ -31,5 +32,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
