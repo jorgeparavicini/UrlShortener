@@ -79,7 +79,7 @@ spec:
   selector:
     app: urlshortener-service-db
   ports:
-    - name: mssql
+    - name: mssql-service
       protocol: TCP
       port: 5434
       targetPort: 1433
