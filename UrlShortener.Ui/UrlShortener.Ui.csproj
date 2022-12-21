@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="7.0.0" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="7.0.0" />
+    <PackageReference Include="prometheus-net.SystemMetrics" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
